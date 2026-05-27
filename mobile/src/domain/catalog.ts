@@ -1,0 +1,82 @@
+import type { CharacterDefinition, CharacterId } from './types';
+
+export const STARTER_IDS: readonly Extract<CharacterId, `starter-${string}`>[] = [
+  'starter-sprout',
+  'starter-comet',
+  'starter-mallow',
+];
+
+export const CHARACTER_CATALOG: Record<CharacterId, CharacterDefinition> = {
+  'starter-sprout': {
+    id: 'starter-sprout',
+    name: '새싹콩',
+    description: '조용히 자라며 친구를 든든하게 지켜 주는 새싹입니다.',
+    role: 'defense',
+    skillName: '포근한 보호막',
+    starter: true,
+    palette: { primary: '#74C365', secondary: '#E5F5D5' },
+  },
+  'starter-comet': {
+    id: 'starter-comet',
+    name: '별콩',
+    description: '반짝이는 꼬리를 흔들며 힘차게 앞으로 나아갑니다.',
+    role: 'attack',
+    skillName: '반짝 돌진',
+    starter: true,
+    palette: { primary: '#FFD166', secondary: '#FFF0B3' },
+  },
+  'starter-mallow': {
+    id: 'starter-mallow',
+    name: '몽실이',
+    description: '달콤한 마음으로 지친 친구를 다정하게 보살핍니다.',
+    role: 'heal',
+    skillName: '달콤한 회복',
+    starter: true,
+    palette: { primary: '#F7A8B8', secondary: '#FFE0E7' },
+  },
+  'cloud-puff': {
+    id: 'cloud-puff',
+    name: '구름포',
+    description: '폭신한 구름 속에서 밝은 응원의 목소리를 들려줍니다.',
+    role: 'support',
+    skillName: '구름 응원',
+    starter: false,
+    palette: { primary: '#8FD3FF', secondary: '#ECF8FF' },
+  },
+  'ember-dot': {
+    id: 'ember-dot',
+    name: '불씨톡',
+    description: '작은 불씨에 씩씩한 열정을 담아 톡톡 터뜨립니다.',
+    role: 'attack',
+    skillName: '톡톡 불꽃',
+    starter: false,
+    palette: { primary: '#FF704D', secondary: '#FFD7CC' },
+  },
+  'shell-nap': {
+    id: 'shell-nap',
+    name: '조개잠',
+    description: '단단한 조개껍질 아래 편안하고 안전한 쉼을 만듭니다.',
+    role: 'defense',
+    skillName: '단단한 낮잠',
+    starter: false,
+    palette: { primary: '#7CB7B2', secondary: '#DBF1EE' },
+  },
+  'dew-bell': {
+    id: 'dew-bell',
+    name: '이슬방울',
+    description: '맑은 아침 이슬처럼 상쾌한 기운을 나눠 줍니다.',
+    role: 'heal',
+    skillName: '맑은 물방울',
+    starter: false,
+    palette: { primary: '#56C7C2', secondary: '#D8F7F5' },
+  },
+  'moon-ribbon': {
+    id: 'moon-ribbon',
+    name: '달리본',
+    description: '은은한 달빛 리본으로 모두의 노래를 하나로 잇습니다.',
+    role: 'support',
+    skillName: '달빛 합창',
+    starter: false,
+    palette: { primary: '#8B7FD6', secondary: '#ECE8FF' },
+  },
+};
