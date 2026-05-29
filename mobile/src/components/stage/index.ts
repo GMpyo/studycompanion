@@ -1,0 +1,2 @@
+export { StageProgressPanel } from './StageProgressPanel';
+

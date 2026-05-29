@@ -1,0 +1,70 @@
+<h2>Which development split should lead the next phase?</h2>
+<p class="subtitle">A rough map for dividing work across multiple AI coding tools without making everyone edit the same files at once.</p>
+
+<div class="cards">
+  <div class="card" data-choice="backend-first" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-header">Backend-First</div>
+        <div class="mockup-body">
+          <div class="mock-nav">Login -> Profile -> Friends -> Ranking</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+            <div class="placeholder">API contracts</div>
+            <div class="placeholder">Mobile integration</div>
+          </div>
+          <button class="mock-button">Friend ranking loop</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. Backend first</h3>
+      <p>Build account, cloud save, friend add, and ranking APIs before expanding the game. Best if cross-device and social proof matter most.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="game-first" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-header">Solo Game Loop First</div>
+        <div class="mockup-body">
+          <div class="placeholder">Study -> XP -> Stage clear</div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="mock-button">Stage 1</button>
+            <button class="mock-button">Stage 2</button>
+            <button class="mock-button">Boss</button>
+          </div>
+          <div class="mock-sidebar" style="margin-top:12px">Idle rewards and character growth</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. Game first</h3>
+      <p>Make studying feed a solo stage/idle progression system first. Best if the main risk is whether the app feels fun alone.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="parallel-slices" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-header">Parallel Feature Slices</div>
+        <div class="mockup-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+            <div class="placeholder">AI 1<br>Backend</div>
+            <div class="placeholder">AI 2<br>Codex UI</div>
+            <div class="placeholder">AI 3<br>Game math</div>
+          </div>
+          <button class="mock-button" style="margin-top:12px">Integration branch</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. Parallel slices</h3>
+      <p>Freeze shared interfaces, then split backend, character/dex UI, and solo stage logic into separate branches. Fastest, but needs discipline.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>My recommendation</h3>
+  <p>Use C as the coordination method, but sequence the product risk like B -> 2 -> 1: first make the solo game loop fun locally, then polish character/dex presentation, then attach backend social systems once the core loop is worth sharing.</p>
+</div>

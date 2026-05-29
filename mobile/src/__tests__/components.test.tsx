@@ -4,8 +4,13 @@ import { StyleSheet } from 'react-native';
 
 import { CharacterCard } from '../components/CharacterCard';
 import { PrimaryButton } from '../components/PrimaryButton';
+import { GameSurface } from '../components/ui/GameSurface';
+import { IconButton } from '../components/ui/IconButton';
+import { ProgressMeter } from '../components/ui/ProgressMeter';
+import { SectionHeader } from '../components/ui/SectionHeader';
+import { StatPill } from '../components/ui/StatPill';
 import { createInitialState } from '../state/initialState';
-import { colors } from '../theme/tokens';
+import { colors, shadows } from '../theme/tokens';
 
 describe('CharacterCard', () => {
   test('shows the starter companion details and progress', () => {
@@ -71,5 +76,46 @@ describe('PrimaryButton', () => {
     fireEvent.press(screen.getByRole('button', { name: '집중 시작' }));
 
     expect(onPress).not.toHaveBeenCalled();
+  });
+});
+
+describe('premium UI primitives', () => {
+  test('renders a game surface with the elevated panel treatment', () => {
+    render(
+      <GameSurface testID="surface">
+        <SectionHeader title="스테이지" eyebrow="오늘의 진행" />
+      </GameSurface>,
+    );
+
+    expect(screen.getByText('오늘의 진행')).toBeTruthy();
+    expect(screen.getByText('스테이지')).toBeTruthy();
+    expect(StyleSheet.flatten(screen.getByTestId('surface').props.style)).toMatchObject({
+      backgroundColor: colors.panel,
+      borderColor: colors.panelBorder,
+      shadowColor: shadows.soft.shadowColor,
+    });
+  });
+
+  test('renders stat pills and progress meters with stable labels', () => {
+    render(
+      <>
+        <StatPill label="공부" value="45분" tone="study" />
+        <ProgressMeter label="진행도" value={45} max={60} />
+      </>,
+    );
+
+    expect(screen.getByText('공부')).toBeTruthy();
+    expect(screen.getByText('45분')).toBeTruthy();
+    expect(screen.getByText('진행도')).toBeTruthy();
+    expect(screen.getByText('75%')).toBeTruthy();
+  });
+
+  test('renders an icon button with an accessible label', () => {
+    const onPress = jest.fn();
+
+    render(<IconButton label="도감 열기" symbol="★" onPress={onPress} />);
+    fireEvent.press(screen.getByRole('button', { name: '도감 열기' }));
+
+    expect(onPress).toHaveBeenCalledTimes(1);
   });
 });
