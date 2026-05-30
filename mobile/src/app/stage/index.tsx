@@ -14,8 +14,8 @@ export default function StageScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>솔로 모험</Text>
-        <Text style={styles.caption}>통합 단계에서 공부 완료 흐름과 연결될 예정이에요.</Text>
+        <Text style={styles.title}>개인 레이드</Text>
+        <Text style={styles.caption}>공부 시간으로 방해 보스의 HP를 깎는 솔로 토벌전이에요.</Text>
         <Text style={styles.caption}>현재 누적 공부 기록 {totalMinutes}분</Text>
         <StageProgressPanel progress={progress} />
       </ScrollView>
@@ -46,4 +46,3 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
 });
-

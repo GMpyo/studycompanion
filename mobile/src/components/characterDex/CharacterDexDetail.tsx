@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 import { CHARACTER_CATALOG } from '../../domain/catalog';
 import {
   getCharacterDexEntry,
+  getCharacterStageArt,
   getEvolutionSlots,
   ROLE_LABELS,
 } from '../../domain/characterDex';
@@ -49,12 +50,13 @@ export function CharacterDexDetail({ character }: CharacterDexDetailProps) {
     <View style={styles.container}>
       <GameSurface>
         <SectionHeader eyebrow="캐릭터 도감" title={entry.displayName} trailing={ROLE_LABELS[definition.role]} />
-        <View
-          accessibilityElementsHidden
-          importantForAccessibility="no-hide-descendants"
-          style={[styles.portrait, { backgroundColor: definition.palette.secondary }]}>
-          <View style={[styles.characterShape, { backgroundColor: definition.palette.primary }]} />
-          <View style={[styles.characterBase, { backgroundColor: definition.palette.primary }]} />
+        <View style={[styles.portrait, { backgroundColor: definition.palette.secondary }]}>
+          <Image
+            accessibilityLabel={`${entry.displayName} ${evolutionSlots[0].label} 도감 이미지`}
+            resizeMode="contain"
+            source={getCharacterStageArt(character.id, character.stage)}
+            style={styles.characterImage}
+          />
         </View>
         <View style={styles.statRow}>
           <StatPill label="역할" value={ROLE_LABELS[definition.role]} tone="study" />
@@ -69,7 +71,12 @@ export function CharacterDexDetail({ character }: CharacterDexDetailProps) {
         <View style={styles.evolutionGrid}>
           {evolutionSlots.map((slot) => (
             <View key={slot.stage} style={styles.evolutionSlot}>
-              <View style={[styles.stageShape, slot.state === 'visible' && styles.futureShape]} />
+              <Image
+                accessibilityLabel={`${entry.displayName} ${slot.label}`}
+                resizeMode="contain"
+                source={getCharacterStageArt(character.id, slot.stage)}
+                style={[styles.stageImage, slot.state === 'visible' && styles.futureImage]}
+              />
               <Text style={styles.slotLabel}>{slot.label}</Text>
               <Text style={styles.slotDescription}>{slot.description}</Text>
             </View>
@@ -111,18 +118,9 @@ const styles = StyleSheet.create({
     fontSize: 48,
     fontWeight: '900',
   },
-  characterShape: {
-    borderRadius: 42,
-    height: 96,
-    width: 72,
-  },
-  characterBase: {
-    borderRadius: radius.pill,
-    bottom: 24,
-    height: 8,
-    opacity: 0.22,
-    position: 'absolute',
-    width: 96,
+  characterImage: {
+    height: 132,
+    width: 132,
   },
   statRow: {
     flexDirection: 'row',
@@ -155,21 +153,19 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
     padding: spacing.md,
   },
-  stageShape: {
-    backgroundColor: colors.studySoft,
-    borderRadius: radius.pill,
-    height: 42,
-    width: 34,
-  },
   hiddenShape: {
     backgroundColor: colors.line,
     borderRadius: radius.pill,
     height: 42,
     width: 34,
   },
-  futureShape: {
-    backgroundColor: colors.line,
+  stageImage: {
+    height: 54,
+    width: 54,
+  },
+  futureImage: {
     opacity: 0.75,
+    tintColor: colors.inkStrong,
   },
   slotLabel: {
     color: colors.inkStrong,

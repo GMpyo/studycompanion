@@ -13,19 +13,21 @@ interface StageProgressPanelProps {
 
 export function StageProgressPanel({ progress }: StageProgressPanelProps) {
   const stage = getCurrentStage(progress);
+  const remainingHp = Math.max(0, stage.requiredStudyMinutes - progress.accumulatedMinutes);
 
   return (
     <GameSurface>
-      <SectionHeader eyebrow="솔로 스테이지" title={stage.title} trailing={`권장 전투력 ${stage.recommendedPower}`} />
+      <SectionHeader eyebrow="개인 레이드" title={stage.title} trailing={`HP ${remainingHp} 남음`} />
       <Text style={styles.description}>{stage.description}</Text>
+      <Text style={styles.theme}>방해 요소: {stage.bossTheme}</Text>
       <View style={styles.progressBlock}>
         <View style={styles.minuteRow}>
           <Text style={styles.minuteText}>
-            {progress.accumulatedMinutes} / {stage.requiredStudyMinutes}분
+            {progress.accumulatedMinutes} / {stage.requiredStudyMinutes} 피해
           </Text>
         </View>
         <ProgressMeter
-          label="진행도"
+          label="토벌 진행도"
           value={progress.accumulatedMinutes}
           max={stage.requiredStudyMinutes}
         />
@@ -45,6 +47,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     marginTop: spacing.md,
+  },
+  theme: {
+    color: colors.study,
+    fontSize: 13,
+    fontWeight: '800',
+    lineHeight: 18,
+    marginTop: spacing.sm,
   },
   progressBlock: {
     gap: spacing.sm,
@@ -66,4 +75,3 @@ const styles = StyleSheet.create({
     marginTop: spacing.lg,
   },
 });
-

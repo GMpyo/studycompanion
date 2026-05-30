@@ -18,32 +18,36 @@ describe('stage progression domain', () => {
     expect(progress.clearedStageIds).toEqual([]);
   });
 
-  test('adds study minutes without clearing before the requirement is met', () => {
-    const result = applyStudyMinutesToStageProgress(createInitialStageProgress(), 20);
+  test('adds study minutes as raid damage before the boss is defeated', () => {
+    const result = applyStudyMinutesToStageProgress(createInitialStageProgress(), 10);
 
-    expect(result.progress.currentStageId).toBe('chapter-1-stage-1');
-    expect(result.progress.accumulatedMinutes).toBe(20);
+    expect(result.progress.currentStageId).toBe('chapter-1-raid-1');
+    expect(result.progress.accumulatedMinutes).toBe(10);
     expect(result.clearedStages).toEqual([]);
     expect(result.reward).toEqual({ xp: 0, snacks: 0, discoveryPoints: 0 });
   });
 
-  test('clears a stage, carries extra minutes, and grants stage rewards', () => {
-    const result = applyStudyMinutesToStageProgress(createInitialStageProgress(), 35);
+  test('defeats a raid boss, carries extra damage, and grants boss rewards', () => {
+    const result = applyStudyMinutesToStageProgress(createInitialStageProgress(), 20);
 
-    expect(result.progress.currentStageId).toBe('chapter-1-stage-2');
+    expect(result.progress.currentStageId).toBe('chapter-1-raid-2');
     expect(result.progress.accumulatedMinutes).toBe(5);
-    expect(result.progress.clearedStageIds).toEqual(['chapter-1-stage-1']);
-    expect(result.clearedStages.map((stage) => stage.id)).toEqual(['chapter-1-stage-1']);
-    expect(result.reward).toEqual({ xp: 12, snacks: 1, discoveryPoints: 2 });
+    expect(result.progress.clearedStageIds).toEqual(['chapter-1-raid-1']);
+    expect(result.clearedStages.map((stage) => stage.id)).toEqual(['chapter-1-raid-1']);
+    expect(result.reward).toEqual({ xp: 15, snacks: 1, discoveryPoints: 2 });
   });
 
-  test('can clear multiple stages in one long study session', () => {
+  test('can defeat multiple raid bosses in one long study session', () => {
     const result = applyStudyMinutesToStageProgress(createInitialStageProgress(), 100);
 
-    expect(result.progress.currentStageId).toBe('chapter-1-stage-3');
-    expect(result.progress.accumulatedMinutes).toBe(25);
-    expect(result.progress.clearedStageIds).toEqual(['chapter-1-stage-1', 'chapter-1-stage-2']);
-    expect(result.reward).toEqual({ xp: 30, snacks: 2, discoveryPoints: 5 });
+    expect(result.progress.currentStageId).toBe('chapter-1-raid-4');
+    expect(result.progress.accumulatedMinutes).toBe(10);
+    expect(result.progress.clearedStageIds).toEqual([
+      'chapter-1-raid-1',
+      'chapter-1-raid-2',
+      'chapter-1-raid-3',
+    ]);
+    expect(result.reward).toEqual({ xp: 90, snacks: 4, discoveryPoints: 9 });
   });
 
   test('ignores invalid or negative study minutes', () => {
@@ -54,21 +58,22 @@ describe('stage progression domain', () => {
   });
 
   test('returns the current stage definition', () => {
-    expect(getCurrentStage(createInitialStageProgress()).title).toBe('책상 정리 숲길');
+    expect(getCurrentStage(createInitialStageProgress()).title).toBe('몽롱한 졸음 요정');
   });
 });
 
 describe('StageProgressPanel', () => {
   test('renders current stage, progress percentage, and next reward', () => {
-    const progress = applyStudyMinutesToStageProgress(createInitialStageProgress(), 15).progress;
+    const progress = applyStudyMinutesToStageProgress(createInitialStageProgress(), 10).progress;
 
     render(<StageProgressPanel progress={progress} />);
 
-    expect(screen.getByText('책상 정리 숲길')).toBeTruthy();
-    expect(screen.getByText('15 / 30분')).toBeTruthy();
-    expect(screen.getByText('50%')).toBeTruthy();
+    expect(screen.getByText('몽롱한 졸음 요정')).toBeTruthy();
+    expect(screen.getByText('HP 5 남음')).toBeTruthy();
+    expect(screen.getByText('10 / 15 피해')).toBeTruthy();
+    expect(screen.getByText('67%')).toBeTruthy();
     expect(screen.getByText('XP')).toBeTruthy();
-    expect(screen.getByText('+12')).toBeTruthy();
+    expect(screen.getByText('+15')).toBeTruthy();
     expect(screen.getByText('간식')).toBeTruthy();
     expect(screen.getByText('+1')).toBeTruthy();
   });

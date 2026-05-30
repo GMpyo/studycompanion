@@ -1,3 +1,5 @@
+import type { ImageSourcePropType } from 'react-native';
+
 import type { CharacterId, CharacterRole, CharacterStage, OwnedCharacter } from './types';
 
 export interface CharacterDexEntry {
@@ -150,8 +152,66 @@ export const CHARACTER_DEX: Record<CharacterId, CharacterDexEntry> = {
   },
 };
 
+export const CHARACTER_STAGE_ART: Record<CharacterId, Record<CharacterStage, ImageSourcePropType>> = {
+  'starter-sprout': {
+    egg: require('../../assets/images/characters/starter-sprout-egg.png'),
+    baby: require('../../assets/images/characters/starter-sprout-baby.png'),
+    growing: require('../../assets/images/characters/starter-sprout-growing.png'),
+    adult: require('../../assets/images/characters/starter-sprout-adult.png'),
+  },
+  'starter-comet': {
+    egg: require('../../assets/images/characters/starter-comet-egg.png'),
+    baby: require('../../assets/images/characters/starter-comet-baby.png'),
+    growing: require('../../assets/images/characters/starter-comet-growing.png'),
+    adult: require('../../assets/images/characters/starter-comet-adult.png'),
+  },
+  'starter-mallow': {
+    egg: require('../../assets/images/characters/starter-mallow-egg.png'),
+    baby: require('../../assets/images/characters/starter-mallow-baby.png'),
+    growing: require('../../assets/images/characters/starter-mallow-growing.png'),
+    adult: require('../../assets/images/characters/starter-mallow-adult.png'),
+  },
+  'cloud-puff': {
+    egg: require('../../assets/images/characters/cloud-puff-egg.png'),
+    baby: require('../../assets/images/characters/cloud-puff-baby.png'),
+    growing: require('../../assets/images/characters/cloud-puff-growing.png'),
+    adult: require('../../assets/images/characters/cloud-puff-adult.png'),
+  },
+  'ember-dot': {
+    egg: require('../../assets/images/characters/ember-dot-egg.png'),
+    baby: require('../../assets/images/characters/ember-dot-baby.png'),
+    growing: require('../../assets/images/characters/ember-dot-growing.png'),
+    adult: require('../../assets/images/characters/ember-dot-adult.png'),
+  },
+  'shell-nap': {
+    egg: require('../../assets/images/characters/shell-nap-egg.png'),
+    baby: require('../../assets/images/characters/shell-nap-baby.png'),
+    growing: require('../../assets/images/characters/shell-nap-growing.png'),
+    adult: require('../../assets/images/characters/shell-nap-adult.png'),
+  },
+  'dew-bell': {
+    egg: require('../../assets/images/characters/dew-bell-egg.png'),
+    baby: require('../../assets/images/characters/dew-bell-baby.png'),
+    growing: require('../../assets/images/characters/dew-bell-growing.png'),
+    adult: require('../../assets/images/characters/dew-bell-adult.png'),
+  },
+  'moon-ribbon': {
+    egg: require('../../assets/images/characters/moon-ribbon-egg.png'),
+    baby: require('../../assets/images/characters/moon-ribbon-baby.png'),
+    growing: require('../../assets/images/characters/moon-ribbon-growing.png'),
+    adult: require('../../assets/images/characters/moon-ribbon-adult.png'),
+  },
+};
+
 export function getCharacterDexEntry(characterId: CharacterId): CharacterDexEntry {
   return CHARACTER_DEX[characterId];
+}
+
+export function getCharacterStageArt(
+  characterId: CharacterId,
+  stage: CharacterStage,
+): ImageSourcePropType {
+  return CHARACTER_STAGE_ART[characterId][stage];
 }
 
 export function getEvolutionSlots(character: OwnedCharacter): EvolutionSlot[] {

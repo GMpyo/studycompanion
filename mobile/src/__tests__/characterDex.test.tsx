@@ -5,6 +5,7 @@ import { CharacterDexDetail } from '../components/characterDex/CharacterDexDetai
 import { CHARACTER_CATALOG } from '../domain/catalog';
 import {
   CHARACTER_DEX,
+  CHARACTER_STAGE_ART,
   getCharacterDexEntry,
   getEvolutionSlots,
 } from '../domain/characterDex';
@@ -14,6 +15,17 @@ import { createInitialState } from '../state/initialState';
 describe('character dex metadata', () => {
   test('has one dex entry for every catalog character without changing character ids', () => {
     expect(Object.keys(CHARACTER_DEX).sort()).toEqual(Object.keys(CHARACTER_CATALOG).sort());
+  });
+
+  test('has four stage art assets for every catalog character', () => {
+    (Object.keys(CHARACTER_CATALOG) as CharacterId[]).forEach((characterId) => {
+      expect(Object.keys(CHARACTER_STAGE_ART[characterId]).sort()).toEqual([
+        'adult',
+        'baby',
+        'egg',
+        'growing',
+      ]);
+    });
   });
 
   test('returns visible future silhouettes and unlocked current progress', () => {
@@ -55,6 +67,7 @@ describe('CharacterDexDetail', () => {
     expect(screen.getByText(entry.personality)).toBeTruthy();
     expect(screen.getAllByText('방어형').length).toBeGreaterThan(0);
     expect(screen.getByText(CHARACTER_CATALOG['starter-sprout'].skillName)).toBeTruthy();
+    expect(screen.getByLabelText('새싹콩 알 도감 이미지')).toBeTruthy();
     expect(screen.getByText('성장기 실루엣')).toBeTruthy();
     expect(screen.getByText('성체 실루엣')).toBeTruthy();
   });

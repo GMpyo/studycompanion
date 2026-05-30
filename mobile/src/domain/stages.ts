@@ -7,6 +7,8 @@ export interface StageDefinition {
   description: string;
   requiredStudyMinutes: number;
   recommendedPower: number;
+  bossTheme: string;
+  clearMessage: string;
   reward: RewardBundle;
 }
 
@@ -19,40 +21,58 @@ export interface StageProgress {
 
 export const STAGE_CATALOG: StageDefinition[] = [
   {
-    id: 'chapter-1-stage-1',
+    id: 'chapter-1-raid-1',
     chapterId: 'chapter-1',
-    title: '책상 정리 숲길',
-    description: '첫 걸음은 공부 자리를 정돈하며 숲길을 여는 단계예요.',
-    requiredStudyMinutes: 30,
+    title: '몽롱한 졸음 요정',
+    description: '약한 졸음과 식곤증이 첫 집중을 흐리게 만들어요.',
+    requiredStudyMinutes: 15,
     recommendedPower: 10,
-    reward: { xp: 12, snacks: 1, discoveryPoints: 2 },
+    bossTheme: '약한 졸음과 식곤증',
+    clearMessage: '무거운 눈꺼풀을 이겨내고 첫걸음을 내디뎠다!',
+    reward: { xp: 15, snacks: 1, discoveryPoints: 2 },
   },
   {
-    id: 'chapter-1-stage-2',
+    id: 'chapter-1-raid-2',
     chapterId: 'chapter-1',
-    title: '연필빛 언덕',
-    description: '짧은 집중을 이어 붙여 언덕 위의 길을 밝혀요.',
-    requiredStudyMinutes: 45,
+    title: '5분만 더 슬라임',
+    description: '시작을 미루는 핑계가 말랑하게 달라붙는 보스예요.',
+    requiredStudyMinutes: 30,
     recommendedPower: 18,
-    reward: { xp: 18, snacks: 1, discoveryPoints: 3 },
+    bossTheme: '시작을 미루는 습관',
+    clearMessage: '미루고 싶은 핑계를 베어내고 지금을 선택했다!',
+    reward: { xp: 30, snacks: 1, discoveryPoints: 3 },
   },
   {
-    id: 'chapter-1-stage-3',
+    id: 'chapter-1-raid-3',
     chapterId: 'chapter-1',
-    title: '고요한 노트 다리',
-    description: '흩어진 내용을 정리하며 다음 구역으로 건너가요.',
-    requiredStudyMinutes: 60,
+    title: '산만한 책상 골렘',
+    description: '정리되지 않은 주변 환경이 돌덩이처럼 집중을 막아요.',
+    requiredStudyMinutes: 45,
     recommendedPower: 28,
-    reward: { xp: 24, snacks: 2, discoveryPoints: 4 },
+    bossTheme: '정리 안 된 주변 환경',
+    clearMessage: '어지러운 환경을 정리하니 마음도 맑아졌다!',
+    reward: { xp: 45, snacks: 2, discoveryPoints: 4 },
+  },
+  {
+    id: 'chapter-1-raid-4',
+    chapterId: 'chapter-1',
+    title: '폭신한 침대 괴물',
+    description: '눕고 싶은 유혹이 푹신한 몸으로 책상 앞을 가로막아요.',
+    requiredStudyMinutes: 60,
+    recommendedPower: 42,
+    bossTheme: '눕고 싶은 유혹',
+    clearMessage: '달콤한 이불의 유혹을 뿌리치고 책상에 앉았다!',
+    reward: { xp: 60, snacks: 2, discoveryPoints: 5 },
   },
   {
     id: 'chapter-1-boss',
     chapterId: 'chapter-1',
-    title: '졸음 그림자',
-    description: '챕터 끝에서 졸음을 몰아내는 첫 보스 단계예요.',
+    title: '무기력의 안개나무',
+    description: '시작의 숲을 뒤덮은 무기력의 안개를 걷어내는 챕터 보스예요.',
     requiredStudyMinutes: 90,
-    recommendedPower: 42,
-    reward: { xp: 42, snacks: 3, discoveryPoints: 8 },
+    recommendedPower: 60,
+    bossTheme: '초기 무기력감',
+    clearMessage: '안개처럼 덮여 있던 무기력함이 흩어진다. 진정한 여정의 시작이다!',
+    reward: { xp: 100, snacks: 3, discoveryPoints: 8 },
   },
 ];
-

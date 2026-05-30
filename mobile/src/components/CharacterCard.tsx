@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 import { CHARACTER_CATALOG } from '../domain/catalog';
+import { getCharacterStageArt, STAGE_LABELS } from '../domain/characterDex';
 import type { CharacterRole, CharacterStage, OwnedCharacter } from '../domain/types';
 import { colors, radius, spacing } from '../theme/tokens';
 
@@ -8,13 +9,6 @@ interface CharacterCardProps {
   character: OwnedCharacter;
   compact?: boolean;
 }
-
-const STAGE_LABELS: Record<CharacterStage, string> = {
-  egg: '알',
-  baby: '아기',
-  growing: '성장기',
-  adult: '성체',
-};
 
 const ROLE_LABELS: Record<CharacterRole, string> = {
   attack: '공격형',
@@ -25,24 +19,25 @@ const ROLE_LABELS: Record<CharacterRole, string> = {
 
 export function CharacterCard({ character, compact = false }: CharacterCardProps) {
   const definition = CHARACTER_CATALOG[character.id];
+  const stageLabel = STAGE_LABELS[character.stage];
 
   return (
     <View style={[styles.card, compact && styles.compactCard]}>
       <View style={styles.heading}>
         <View
-          accessibilityElementsHidden
-          importantForAccessibility="no-hide-descendants"
           style={[styles.portrait, { backgroundColor: definition.palette.secondary }]}>
-          <View style={[styles.egg, { backgroundColor: definition.palette.primary }]}>
-            <View style={styles.highlight} />
-          </View>
-          <View style={[styles.base, { backgroundColor: definition.palette.primary }]} />
+          <Image
+            accessibilityLabel={`${definition.name} ${stageLabel} 이미지`}
+            resizeMode="contain"
+            source={getCharacterStageArt(character.id, character.stage)}
+            style={styles.characterImage}
+          />
         </View>
 
         <View style={styles.details}>
           <Text style={styles.name}>{definition.name}</Text>
           <View style={styles.badges}>
-            <Text style={styles.stage}>{STAGE_LABELS[character.stage]}</Text>
+            <Text style={styles.stage}>{stageLabel}</Text>
             <Text style={styles.role}>{ROLE_LABELS[definition.role]}</Text>
           </View>
           <Text style={styles.skill}>{definition.skillName}</Text>
@@ -81,26 +76,9 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     width: 80,
   },
-  egg: {
-    borderRadius: 30,
-    height: 50,
-    width: 40,
-  },
-  highlight: {
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    borderRadius: radius.pill,
-    height: 14,
-    marginLeft: 10,
-    marginTop: 10,
-    width: 9,
-  },
-  base: {
-    borderRadius: radius.pill,
-    bottom: 10,
-    height: 5,
-    opacity: 0.2,
-    position: 'absolute',
-    width: 48,
+  characterImage: {
+    height: 70,
+    width: 70,
   },
   details: {
     flexShrink: 1,

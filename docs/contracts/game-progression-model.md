@@ -2,11 +2,11 @@
 
 ## 목표
 
-공부 시간이 솔로 스테이지 진행도로 변환되는 순수 로직을 만든다. 2단계에서는 복잡한 전투, 속성 상성, 자동 전투를 만들지 않는다. 사용자가 공부를 끝내면 진행도가 오르고, 요구 공부 시간을 채우면 스테이지가 클리어되며 보상을 받는 구조만 고정한다.
+공부 시간이 개인 레이드 보스에게 주는 피해로 변환되는 순수 로직을 만든다. 2단계에서는 복잡한 전투, 속성 상성, 자동 전투를 만들지 않는다. 사용자가 공부를 끝내면 보스 HP가 깎이고, 요구 HP를 모두 깎으면 보스가 클리어되며 보상을 받는 구조만 고정한다.
 
 ## 파일 경계
 
-- 스테이지 정의: `mobile/src/domain/stages.ts`
+- 레이드 보스 정의: `mobile/src/domain/stages.ts`
 - 진행 계산: `mobile/src/domain/stageProgression.ts`
 - 스테이지 UI: `mobile/src/components/stage/`
 - 독립 화면: `mobile/src/app/stage/`
@@ -40,10 +40,10 @@ interface StageProgress {
 
 ## 계산 규칙
 
-1. 완료한 공부 시간이 현재 스테이지의 `accumulatedMinutes`에 더해진다.
-2. `accumulatedMinutes >= requiredStudyMinutes`가 되면 현재 스테이지가 클리어된다.
-3. 초과 시간은 다음 스테이지 진행도로 이월된다.
-4. 긴 공부 세션은 여러 스테이지를 한 번에 클리어할 수 있다.
+1. 완료한 공부 시간이 현재 보스에게 주는 피해로 환산된다.
+2. `accumulatedMinutes >= requiredStudyMinutes`가 되면 현재 보스가 클리어된다.
+3. 초과 피해는 다음 보스에게 이월된다.
+4. 긴 공부 세션은 여러 보스를 한 번에 클리어할 수 있다.
 5. 잘못된 시간 값은 무시한다.
 6. 마지막 스테이지 이후의 추가 시간은 마지막 스테이지 요구치까지만 유지한다.
 
@@ -68,4 +68,3 @@ const stageResult = applyStudyMinutesToStageProgress(data.stageProgress, session
 ```ts
 stageProgress: createInitialStageProgress()
 ```
-

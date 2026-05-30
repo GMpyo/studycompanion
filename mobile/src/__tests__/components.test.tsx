@@ -45,6 +45,14 @@ describe('CharacterCard', () => {
       color: colors.accentInk,
     });
   });
+
+  test('renders the current stage pixel art', () => {
+    const character = createInitialState('starter-sprout').characters['starter-sprout'];
+
+    render(<CharacterCard character={character} />);
+
+    expect(screen.getByLabelText('새싹콩 알 이미지')).toBeTruthy();
+  });
 });
 
 describe('PrimaryButton', () => {
