@@ -1,3 +1,5 @@
+import type { ImageSourcePropType } from 'react-native';
+
 import type { RewardBundle } from './types';
 import {
   STAGE_CATALOG,
@@ -6,6 +8,18 @@ import {
 } from './stages';
 
 export { STAGE_CATALOG, type StageDefinition, type StageProgress } from './stages';
+
+export const BOSS_STAGE_ART: Record<string, ImageSourcePropType> = {
+  'chapter-1-raid-1': require('../../assets/images/bosses/drowsy-fairy.png'),
+  'chapter-1-raid-2': require('../../assets/images/bosses/five-more-minutes-slime.png'),
+  'chapter-1-raid-3': require('../../assets/images/bosses/distracted-desk-golem.png'),
+  'chapter-1-raid-4': require('../../assets/images/bosses/cozy-bed-monster.png'),
+  'chapter-1-boss': require('../../assets/images/bosses/fog-tree-boss.png'),
+};
+
+export function getBossStageArt(stageId: string): ImageSourcePropType {
+  return BOSS_STAGE_ART[stageId];
+}
 
 export interface StageProgressResult {
   progress: StageProgress;
@@ -27,6 +41,27 @@ export function getCurrentStage(progress: StageProgress): StageDefinition {
   return (
     STAGE_CATALOG.find((stage) => stage.id === progress.currentStageId) ?? STAGE_CATALOG[0]
   );
+}
+
+export function getCurrentBossHp(progress: StageProgress): number {
+  const stage = getCurrentStage(progress);
+  return Math.max(0, stage.requiredStudyMinutes - progress.accumulatedMinutes);
+}
+
+export function getAccumulatedDamage(progress: StageProgress): number {
+  return progress.accumulatedMinutes;
+}
+
+export function isCurrentStageCleared(progress: StageProgress): boolean {
+  return getCurrentBossHp(progress) === 0;
+}
+
+export function getMinutesUntilNextBoss(progress: StageProgress): number {
+  return getCurrentBossHp(progress);
+}
+
+export function getRewardPreview(progress: StageProgress): RewardBundle {
+  return getCurrentStage(progress).reward;
 }
 
 export function applyStudyMinutesToStageProgress(
@@ -75,4 +110,3 @@ export function applyStudyMinutesToStageProgress(
     reward,
   };
 }
-

@@ -4,8 +4,14 @@ import { render, screen } from '@testing-library/react-native';
 import { StageProgressPanel } from '../components/stage/StageProgressPanel';
 import {
   applyStudyMinutesToStageProgress,
+  BOSS_STAGE_ART,
   createInitialStageProgress,
   getCurrentStage,
+  getCurrentBossHp,
+  getAccumulatedDamage,
+  isCurrentStageCleared,
+  getMinutesUntilNextBoss,
+  getRewardPreview,
   STAGE_CATALOG,
 } from '../domain/stageProgression';
 
@@ -16,6 +22,12 @@ describe('stage progression domain', () => {
     expect(progress.currentStageId).toBe(STAGE_CATALOG[0].id);
     expect(progress.accumulatedMinutes).toBe(0);
     expect(progress.clearedStageIds).toEqual([]);
+  });
+
+  test('has boss art for every raid stage', () => {
+    STAGE_CATALOG.forEach((stage) => {
+      expect(BOSS_STAGE_ART[stage.id]).toBeTruthy();
+    });
   });
 
   test('adds study minutes as raid damage before the boss is defeated', () => {
@@ -60,6 +72,28 @@ describe('stage progression domain', () => {
   test('returns the current stage definition', () => {
     expect(getCurrentStage(createInitialStageProgress()).title).toBe('몽롱한 졸음 요정');
   });
+
+  test('HP does not drop below 0', () => {
+    const progress = createInitialStageProgress();
+    progress.accumulatedMinutes = 100;
+    expect(getCurrentBossHp(progress)).toBe(0);
+  });
+
+  test('helper functions calculate correct raid progression values', () => {
+    let progress = createInitialStageProgress();
+    expect(getCurrentBossHp(progress)).toBe(15);
+    expect(getAccumulatedDamage(progress)).toBe(0);
+    expect(isCurrentStageCleared(progress)).toBe(false);
+    expect(getMinutesUntilNextBoss(progress)).toBe(15);
+    expect(getRewardPreview(progress).xp).toBe(15);
+
+    progress = applyStudyMinutesToStageProgress(progress, 20).progress;
+    expect(getCurrentBossHp(progress)).toBe(25);
+    expect(getAccumulatedDamage(progress)).toBe(5);
+    expect(isCurrentStageCleared(progress)).toBe(false);
+    expect(getMinutesUntilNextBoss(progress)).toBe(25);
+    expect(getRewardPreview(progress).xp).toBe(30);
+  });
 });
 
 describe('StageProgressPanel', () => {
@@ -69,6 +103,7 @@ describe('StageProgressPanel', () => {
     render(<StageProgressPanel progress={progress} />);
 
     expect(screen.getByText('몽롱한 졸음 요정')).toBeTruthy();
+    expect(screen.getByLabelText('몽롱한 졸음 요정 보스 이미지')).toBeTruthy();
     expect(screen.getByText('HP 5 남음')).toBeTruthy();
     expect(screen.getByText('10 / 15 피해')).toBeTruthy();
     expect(screen.getByText('67%')).toBeTruthy();
@@ -76,5 +111,32 @@ describe('StageProgressPanel', () => {
     expect(screen.getByText('+15')).toBeTruthy();
     expect(screen.getByText('간식')).toBeTruthy();
     expect(screen.getByText('+1')).toBeTruthy();
+    expect(screen.getByText('다음 목표까지 5분 남았습니다.')).toBeTruthy();
+  });
+
+  test('renders cleared state for maxed progression', () => {
+    let progress = createInitialStageProgress();
+    progress = applyStudyMinutesToStageProgress(progress, 300).progress;
+
+    render(<StageProgressPanel progress={progress} />);
+
+    expect(screen.getByText('토벌 완료')).toBeTruthy();
+    expect(screen.getByText('90 / 90 피해')).toBeTruthy();
+    expect(screen.getByText('모든 방해 요소를 물리쳤습니다!')).toBeTruthy();
+    expect(screen.getByText('토벌 성공!')).toBeTruthy();
+    expect(screen.getByText('챕터 토벌 완료')).toBeTruthy();
+  });
+
+  test('renders result panel with next raid name when a stage is cleared', () => {
+    const progress = {
+      currentStageId: 'chapter-1-raid-1',
+      accumulatedMinutes: 15,
+      clearedStageIds: [],
+    };
+
+    render(<StageProgressPanel progress={progress} />);
+
+    expect(screen.getByText('토벌 성공!')).toBeTruthy();
+    expect(screen.getByText('다음 목표: 5분만 더 슬라임')).toBeTruthy();
   });
 });
